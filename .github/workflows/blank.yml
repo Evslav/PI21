@@ -23,13 +23,13 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - name: ls
-        run: ls -la
+        run: ls
         
       - uses: actions/checkout@v3
       
       - name: env report
         run: |
-          ls -la
+          ls
           printenv
           
       - name: build 
