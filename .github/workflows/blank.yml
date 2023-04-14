@@ -43,7 +43,7 @@ jobs:
         uses: actions/upload-artifact@v3.1.2
         with:
           name: cpp_app
-          path: hello.o
+          path: hello_lin.o
           retention-days: 5
             
   build_cpp_mac:
@@ -58,5 +58,5 @@ jobs:
         uses: actions/upload-artifact@v3.1.2
         with:
           name: cpp_app
-          path: hello.o
+          path: hello_mac.o
           retention-days: 5
