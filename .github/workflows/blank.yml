@@ -34,5 +34,5 @@ jobs:
           
       - name: build 
         run: |
-          gcc hello.cpp -o hello.o
+          g++ hello.cpp -o hello.o
           
