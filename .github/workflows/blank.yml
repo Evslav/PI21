@@ -16,22 +16,10 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
-  build_cpp:
-    # The type of runner that the job will run on
+  build_cpp_win:
     runs-on: windows-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - name: ls
-        run: ls
-        
       - uses: actions/checkout@v3
-      
-      - name: env report
-        run: |
-          ls
-          printenv
-      
       - uses: ilammy/msvc-dev-cmd@v1
       - name: build 
         run: |
@@ -44,3 +32,31 @@ jobs:
           path: hello.exe
           retention-days: 5
           
+  build_cpp_lin:
+    runs-on: linux-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: build 
+        run: g++ hello.cpp - hello.o
+
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v3.1.2
+        with:
+          name: cpp_app
+          path: hello.o
+          retention-days: 5
+            
+  build_cpp_mac:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ilammy/msvc-dev-cmd@v1
+      - name: build 
+        run: g++ hello.cpp - hello.o
+
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v3.1.2
+        with:
+          name: cpp_app
+          path: hello.o
+          retention-days: 5
