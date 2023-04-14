@@ -18,7 +18,7 @@ jobs:
   # This workflow contains a single job called "build"
   build_cpp:
     # The type of runner that the job will run on
-    runs-on: macos-latest
+    runs-on: windows-latest
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -34,12 +34,12 @@ jobs:
           
       - name: build 
         run: |
-          g++ hello.cpp -o hello.o
+          cl /EHsc hello.cpp
           
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v3.1.2
         with:
           name: cpp_app
-          path: hello.o
+          path: hello.exe
           retention-days: 5
           
