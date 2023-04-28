@@ -14,63 +14,19 @@ jobs:
       matrix:
         os: [ubuntu-latest,windows-latest,macos-latest]
     runs-on: ${{ matrix.os }}
+    env:
+      app_name: hi_${{ matrix.os }}.o
     steps:
       - name: print matrix env
         run: "echo os: ${{ matrix.os }}"
         
       - uses: actions/checkout@v3
       - name: build 
-        run: g++ hello.cpp -o hello_${{ matrix.os }}.o
+        run: g++ hello.cpp -o ${{ env.app_name }}
 
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v3.1.2
         with:
           name: cpp_app_matrix
-          path: hello_${{ matrix.os }}.o
-          retention-days: 5
-        
-
-  build_cpp_win:
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: ilammy/msvc-dev-cmd@v1
-      - name: build 
-        run: |
-          cl /EHsc hello.cpp
-          
-      - name: Upload a Build Artifact
-        uses: actions/upload-artifact@v3.1.2
-        with:
-          name: cpp_app
-          path: hello.exe
-          retention-days: 5
-          
-  build_cpp_lin:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: build 
-        run: g++ hello.cpp -o hello_lin.o
-
-      - name: Upload a Build Artifact
-        uses: actions/upload-artifact@v3.1.2
-        with:
-          name: cpp_app
-          path: hello_lin.o
-          retention-days: 5
-            
-  build_cpp_mac:
-    runs-on: macos-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: ilammy/msvc-dev-cmd@v1
-      - name: build 
-        run: g++ hello.cpp -o hello_mac.o
-
-      - name: Upload a Build Artifact
-        uses: actions/upload-artifact@v3.1.2
-        with:
-          name: cpp_app
-          path: hello_mac.o
+          path: ${{ env.app_name }}
           retention-days: 5
