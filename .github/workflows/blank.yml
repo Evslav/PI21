@@ -12,12 +12,23 @@ jobs:
   build_matrix:
     strategy:
       matrix:
-        os: [1,2,3]
-        ver: [test, prod]
-    runs-on: ubuntu-latest
+        os: [ubuntu-latest,windows-latest,macos-latest]
+    runs-on: ${{ matrix.os }}
     steps:
       - name: print matrix env
-        run: "echo os: ${{ matrix.os }}:${{ matrix.ver }}"
+        run: "echo os: ${{ matrix.os }}"
+        
+      - uses: actions/checkout@v3
+      - name: build 
+        run: g++ hello.cpp -o hello_lin.o
+
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v3.1.2
+        with:
+          name: cpp_app_matrix
+          path: hello_lin.o
+          retention-days: 5
+        
 
   build_cpp_win:
     runs-on: windows-latest
