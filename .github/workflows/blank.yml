@@ -33,6 +33,7 @@ jobs:
           
   build:
     name: send telegram
+    need: build_matrix
     runs-on: ubuntu-latest
     steps:
       - name: send telegram message on push
