@@ -57,6 +57,7 @@ jobs:
             See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
             
   build:
+    needs: build_matrix
     runs-on: ubuntu-latest
     permissions:
       contents: write
