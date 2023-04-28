@@ -13,10 +13,11 @@ jobs:
     strategy:
       matrix:
         os: [1,2,3]
+        ver: [test, prod]
     runs-on: ubuntu-latest
     steps:
       - name: print matrix env
-        run: "echo os: ${{ matrix.os }}"
+        run: "echo os: ${{ matrix.os }}:${{ matrix.ver }}"
 
   build_cpp_win:
     runs-on: windows-latest
