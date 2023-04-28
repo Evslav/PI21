@@ -30,12 +30,7 @@ jobs:
           name: cpp_app_matrix
           path: ${{ env.app_name }}
           retention-days: 5
-          
-  build:
-    name: send telegram
-    needs: build_matrix
-    runs-on: ubuntu-latest
-    steps:
+      
       - name: send telegram message on push
         uses: appleboy/telegram-action@master
         with:
