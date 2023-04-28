@@ -10,6 +10,7 @@ on:
 
 jobs:
   build_matrix:
+    name: build matrix
     strategy:
       matrix:
         os: [ubuntu-latest,windows-latest,macos-latest]
@@ -30,7 +31,17 @@ jobs:
           name: cpp_app_matrix
           path: ${{ env.app_name }}
           retention-days: 5
-      
+  
+  send_telegram:
+    name: send telegram
+    needs: build_matrix
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: cpp_app_matrix
+      - name: ls 
+        run: ls -la 
       - name: send telegram message on push
         uses: appleboy/telegram-action@master
         with:
