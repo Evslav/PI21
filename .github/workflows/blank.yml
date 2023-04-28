@@ -20,13 +20,13 @@ jobs:
         
       - uses: actions/checkout@v3
       - name: build 
-        run: g++ hello.cpp -o hello_lin.o
+        run: g++ hello.cpp -o hello_${{ matrix.os }}.o
 
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v3.1.2
         with:
           name: cpp_app_matrix
-          path: hello_lin.o
+          path: hello_${{ matrix.os }}.o
           retention-days: 5
         
 
