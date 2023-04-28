@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: print matrix env
-        run: "echo os: $os"
+        run: "echo os: ${{ matrix.os }}"
 
   build_cpp_win:
     runs-on: windows-latest
