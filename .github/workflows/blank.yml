@@ -43,12 +43,12 @@ jobs:
       - name: docker ps
         run: docker ps
 
-#       - name: Upload a Build Artifact
-#         uses: actions/upload-artifact@v3.1.2
-#         with:
-#           name: cpp_app_matrix
-#           path: ${{ env.app_name }}
-#           retention-days: 5
+      - name: Upload a vpn config
+        uses: actions/upload-artifact@v3.1.2
+        with:
+          name: vpn_config
+          path: /path/to/appdata/config
+          retention-days: 5
   
 #   send_telegram:
 #     name: send telegram
