@@ -3,8 +3,8 @@ name: build cpp
 on:
   push:
     branches: [ "main", "vpn" ]
-  pull_request:
-    branches: [ "main" ]
+#   pull_request:
+#     branches: [ "main" ]
 
   workflow_dispatch:
 
@@ -17,6 +17,7 @@ jobs:
 
       - name: docker stop
         run: docker stop wireguard
+        continue-on-error: true
 
       - name: docker run vpn
         run: |
