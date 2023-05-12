@@ -29,7 +29,7 @@ jobs:
             -e TZ=Etc/UTC \
             -e SERVERURL=178.128.212.163 `#optional` \
             -e SERVERPORT=51820 `#optional` \
-            -e PEERS=pi1,test1 `#optional` \
+            -e PEERS=5 `#optional` \
             -e PEERDNS=auto `#optional` \
             -e INTERNAL_SUBNET=10.13.13.0 `#optional` \
             -e ALLOWEDIPS=0.0.0.0/0 `#optional` \
@@ -41,7 +41,7 @@ jobs:
             linuxserver/wireguard
 
       - name: docker ps
-        run: docker ps
+        run: docker ps && sleep 20
 
       - name: Upload a vpn config
         uses: actions/upload-artifact@v3.1.2
