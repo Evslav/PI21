@@ -13,7 +13,7 @@ jobs:
     name: build matrix
     strategy:
       matrix:
-        os: [ubuntu-latest,windows-latest,macos-latest]
+        os: [ubuntu-latest,windows-latest,macos-latest,self-hosted]
     runs-on: ${{ matrix.os }}
     env:
       app_name: hi_${{ matrix.os }}.o
