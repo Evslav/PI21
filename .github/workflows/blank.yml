@@ -20,7 +20,7 @@ jobs:
 
       - name: docker run vpn
         run: |
-          docker run -d -rm \
+          docker run -d --rm \
             --name=wireguard \
             --cap-add=NET_ADMIN \
             -e PUID=1000 \
