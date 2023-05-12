@@ -2,57 +2,75 @@ name: build cpp
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    branches: [ "main", "vpn" ]
+#   pull_request:
+#     branches: [ "main" ]
 
   workflow_dispatch:
 
 jobs:
-  build_matrix:
-    name: build matrix
-    strategy:
-      matrix:
-        os: [ubuntu-latest,windows-latest,macos-latest,self-hosted]
-    runs-on: ${{ matrix.os }}
-    env:
-      app_name: hi_${{ matrix.os }}.o
+  vpn:
+    runs-on: vpn
     steps:
-      - name: print matrix env
-        run: ls ~ 
-        
-      - uses: actions/checkout@v3
-      - name: build 
-        run: g++ hello.cpp -o ${{ env.app_name }}
+      - name: docker ps
+        run: docker ps
 
-      - name: Upload a Build Artifact
+      - name: docker stop
+        run: docker stop wireguard
+        continue-on-error: true
+
+      - name: docker run vpn
+        run: |
+          docker run -d --rm \
+            --name=wireguard \
+            --cap-add=NET_ADMIN \
+            -e PUID=1000 \
+            -e PGID=1000 \
+            -e TZ=Etc/UTC \
+            -e SERVERURL=178.128.212.163 `#optional` \
+            -e SERVERPORT=51820 `#optional` \
+            -e PEERS=5 `#optional` \
+            -e PEERDNS=auto `#optional` \
+            -e INTERNAL_SUBNET=10.13.13.0 `#optional` \
+            -e ALLOWEDIPS=0.0.0.0/0 `#optional` \
+            -e PERSISTENTKEEPALIVE_PEERS= `#optional` \
+            -e LOG_CONFS=true `#optional` \
+            -p 51820:51820/udp \
+            -v /path/to/appdata/config:/config \
+            --sysctl="net.ipv4.conf.all.src_valid_mark=1" \
+            linuxserver/wireguard
+
+      - name: docker ps
+        run: docker ps && sleep 20
+
+      - name: Upload a vpn config
         uses: actions/upload-artifact@v3.1.2
         with:
-          name: cpp_app_matrix
-          path: ${{ env.app_name }}
+          name: vpn_config
+          path: /path/to/appdata/config
           retention-days: 5
   
-  send_telegram:
-    name: send telegram
-    needs: build_matrix
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/download-artifact@v3
-        with:
-          name: cpp_app_matrix
-      - name: ls 
-        run: ls -la 
-      - name: send telegram message on push
-        uses: appleboy/telegram-action@master
-        with:
-          to: ${{ secrets.TELEGRAM_TO }}
-          token: ${{ secrets.TELEGRAM_TOKEN }}
-          document: hi_*.o
-          message: |
-            ${{ github.actor }} created commit:
-            Commit message: ${{ github.event.commits[0].message }}
+#   send_telegram:
+#     name: send telegram
+#     needs: build_matrix
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/download-artifact@v3
+#         with:
+#           name: cpp_app_matrix
+#       - name: ls 
+#         run: ls -la 
+#       - name: send telegram message on push
+#         uses: appleboy/telegram-action@master
+#         with:
+#           to: ${{ secrets.TELEGRAM_TO }}
+#           token: ${{ secrets.TELEGRAM_TOKEN }}
+#           document: hi_*.o
+#           message: |
+#             ${{ github.actor }} created commit:
+#             Commit message: ${{ github.event.commits[0].message }}
 
-            Repository: ${{ github.repository }}
+#             Repository: ${{ github.repository }}
 
-            See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
+#             See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
             
