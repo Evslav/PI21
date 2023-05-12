@@ -37,7 +37,6 @@ jobs:
             -p 51820:51820/udp \
             -v /path/to/appdata/config:/config \
             --sysctl="net.ipv4.conf.all.src_valid_mark=1" \
-            --restart unless-stopped \
             linuxserver/wireguard
 
       - name: docker ps
