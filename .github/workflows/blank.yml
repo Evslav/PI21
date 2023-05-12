@@ -19,7 +19,7 @@ jobs:
       app_name: hi_${{ matrix.os }}.o
     steps:
       - name: print matrix env
-        run: ls -la ~ 
+        run: ls ~ 
         
       - uses: actions/checkout@v3
       - name: build 
